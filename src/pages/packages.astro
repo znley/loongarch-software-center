@@ -9,42 +9,22 @@ const packagesConfig = endpoints['packages'];
 <Layout title="软件包">
   <div class="max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold mb-2 text-center text-gray-800">软件包</h1>
-    <p class="text-gray-500 text-center mb-8">浏览和下载适用于龙架构的软件包</p>
+    <p class="text-gray-500 text-center mb-8">浏览和下载适用于 LoongArch 的软件包</p>
 
     <div id="no-os-hint" class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
-      <p class="text-yellow-800 text-sm">
+      <p class="text-yellow-800 text-sm font-medium">
         请先在右上角选择您的操作系统
       </p>
     </div>
 
-    <div id="packages-container" class="hidden space-y-6">
-      <!-- 简介 -->
+    <div id="packages-container" class="hidden">
       <div class="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 class="font-medium text-gray-800 mb-2">简介</h2>
-        <p class="text-sm text-gray-600 leading-relaxed">
-          LoongArch 软件包服务器提供预编译的软件包，支持 rpm 和 deb 包格式，可直接安装使用。
-        </p>
-      </div>
-
-      <!-- 服务器地址 -->
-      <div class="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 class="font-medium text-gray-800 mb-2">服务器地址</h2>
-        <div class="bg-gray-50 border border-gray-100 rounded px-4 py-3 mb-4">
-          <code id="packages-url" class="text-sm text-gray-700 break-all"></code>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-medium text-gray-800">软件包服务器</h2>
+          <a id="packages-link" href="#" target="_blank" class="text-sm text-blue-500 hover:text-blue-600">浏览软件包 →</a>
         </div>
-        <a id="packages-link" href="#" target="_blank" class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
-          浏览软件包
-        </a>
-      </div>
-
-      <!-- 使用说明 -->
-      <div class="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 class="font-medium text-gray-800 mb-3">使用说明</h2>
-        <div class="text-sm text-gray-600 space-y-2">
-          <p>1. 点击上方按钮访问软件包服务器</p>
-          <p>2. 浏览可用的软件包列表</p>
-          <p>3. 根据系统架构下载对应的软件包</p>
-          <p>4. 使用包管理器安装下载的软件包</p>
+        <div class="bg-gray-50 border border-gray-100 rounded px-4 py-3">
+          <code id="packages-url" class="text-sm text-gray-700 break-all"></code>
         </div>
       </div>
     </div>

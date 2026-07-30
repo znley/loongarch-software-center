@@ -30,7 +30,7 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
       </div>
     </div>
 
-    <div id="iso-list" class="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100 hidden"></div>
+    <div id="iso-list" class="hidden"></div>
 
     <div id="no-result" class="hidden text-center text-gray-400 py-12">
       <p class="text-sm">暂无可用的 ISO 镜像</p>
@@ -53,7 +53,7 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
         ? '<img src="' + d.logo_url + '" alt="' + d.distro + '" class="w-8 h-8 object-contain rounded">'
         : '<span class="text-xl">🐧</span>';
 
-      return '<div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition">' +
+      return '<div class="flex items-center justify-between bg-white border border-gray-100 rounded-lg px-5 py-4 mb-3 hover:border-gray-200 transition">' +
         '<div class="flex items-center gap-4">' +
         icon +
         '<div>' +
@@ -61,7 +61,7 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
         '<span class="text-xs text-gray-400">v' + d.version + '</span>' +
         '</div>' +
         '</div>' +
-        '<a href="' + d.iso_download_url + '" target="_blank" class="px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">下载</a>' +
+        '<a href="' + d.iso_download_url + '" target="_blank" class="px-4 py-2 bg-white border border-gray-300 text-gray-600 text-sm rounded hover:border-gray-400 hover:text-gray-800 transition">下载</a>' +
         '</div>';
     }
 
