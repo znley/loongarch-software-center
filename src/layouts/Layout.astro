@@ -36,6 +36,7 @@ const distros = getDistros();
             <a href="/" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">首页</a>
             <a href="/iso" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">系统下载</a>
             <a href="/sources" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">软件源</a>
+            <a href="/registry" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">容器镜像</a>
             <a href="/packages" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">软件包</a>
           </nav>
 
@@ -84,6 +85,7 @@ const distros = getDistros();
         }
 
         selector.addEventListener('change', updateAbiInfo);
+        updateAbiInfo();
       }
 
       function updateAbiInfo() {
