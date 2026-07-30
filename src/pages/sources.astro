@@ -1,0 +1,134 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getSources } from '../lib/data';
+
+const sources = getSources();
+const sourceKeys = Object.keys(sources);
+---
+
+<Layout title="软件源">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-8 text-center text-gray-800">软件源配置</h1>
+
+    <div id="no-os-hint" class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
+      <p class="text-yellow-800 text-sm">
+        请先在右上角选择您的操作系统，以获取对应的软件源配置。
+      </p>
+    </div>
+
+    <div id="tabs-container" class="hidden">
+      <div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
+        {sourceKeys.map((key) => (
+          <button
+            data-tab={key}
+            class="tab-btn px-5 py-2.5 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 transition whitespace-nowrap"
+          >
+            {sources[key].name}
+          </button>
+        ))}
+      </div>
+
+      <div id="tab-content" class="bg-white border border-gray-100 rounded-lg p-6"></div>
+    </div>
+  </div>
+
+  <script define:vars={{ sources }}>
+    let currentAbi = null;
+    let currentTab = sourceKeys[0];
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function setActiveTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const btnTab = btn.getAttribute('data-tab');
+        if (btnTab === tab) {
+          btn.classList.remove('text-gray-500', 'border-transparent');
+          btn.classList.add('text-blue-600', 'border-blue-500');
+        } else {
+          btn.classList.remove('text-blue-600', 'border-blue-500');
+          btn.classList.add('text-gray-500', 'border-transparent');
+        }
+      });
+    }
+
+    function renderContent() {
+      const content = document.getElementById('tab-content');
+      if (!content || !currentAbi) return;
+
+      const source = sources[currentTab];
+      if (!source) return;
+
+      const url = source.urls[currentAbi.toString()];
+      if (!url) {
+        content.innerHTML = '<p class="text-gray-400 text-sm">暂无配置</p>';
+        return;
+      }
+
+      let html = '<div class="mb-5">' +
+        '<p class="text-xs text-gray-400 mb-1.5">源地址</p>' +
+        '<code class="block bg-gray-50 px-3 py-2 rounded text-sm text-gray-700 break-all">' + escapeHtml(url) + '</code>' +
+        '</div>';
+
+      if (source.command) {
+        html += '<div class="border-t border-gray-100 pt-4 mb-5">' +
+          '<p class="text-xs text-gray-400 mb-1.5">快速安装</p>' +
+          '<code class="block bg-gray-50 px-3 py-2 rounded text-sm text-gray-700 overflow-x-auto">' +
+          escapeHtml(source.command.replace('{url}', url)) + '</code>' +
+          '</div>';
+      }
+
+      if (source.config) {
+        html += '<div class="border-t border-gray-100 pt-4">' +
+          '<p class="text-xs text-gray-400 mb-1.5">配置文件</p>' +
+          '<pre class="bg-gray-50 px-3 py-2 rounded text-sm text-gray-700 overflow-x-auto whitespace-pre-wrap"><code>' +
+          escapeHtml(source.config.replace('{url}', url)) + '</code></pre>' +
+          '</div>';
+      }
+
+      content.innerHTML = html;
+    }
+
+    function updateUI() {
+      const noOsHint = document.getElementById('no-os-hint');
+      const tabsContainer = document.getElementById('tabs-container');
+
+      if (!currentAbi) {
+        noOsHint?.classList.remove('hidden');
+        tabsContainer?.classList.add('hidden');
+        return;
+      }
+
+      noOsHint?.classList.add('hidden');
+      tabsContainer?.classList.remove('hidden');
+      renderContent();
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tab = e.target.getAttribute('data-tab');
+        if (tab) {
+          setActiveTab(tab);
+          renderContent();
+        }
+      });
+    });
+
+    window.addEventListener('osChanged', (e) => {
+      currentAbi = parseInt(e.detail.abi);
+      setActiveTab(sourceKeys[0]);
+      updateUI();
+    });
+
+    const savedAbi = localStorage.getItem('lasc_abi');
+    if (savedAbi) {
+      currentAbi = parseInt(savedAbi);
+      setActiveTab(sourceKeys[0]);
+      updateUI();
+    }
+  </script>
+</Layout>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "distro": "Loongnix",
+    "version": "22.04",
+    "display_name": "Loongnix 22.04",
+    "logo_url": null,
+    "iso_download_url": "https://iso.loongnix.cn/loongnix-22.04.iso",
+    "abi": 1
+  },
+  {
+    "id": 2,
+    "distro": "Loongnix",
+    "version": "24.04",
+    "display_name": "Loongnix 24.04",
+    "logo_url": null,
+    "iso_download_url": "https://iso.loongnix.cn/loongnix-24.04.iso",
+    "abi": 2
+  },
+  {
+    "id": 3,
+    "distro": "UOS",
+    "version": "20",
+    "display_name": "UOS 20",
+    "logo_url": null,
+    "iso_download_url": "https://iso.loongnix.cn/uos-20.iso",
+    "abi": 1
+  },
+  {
+    "id": 4,
+    "distro": "Anolis",
+    "version": "8",
+    "display_name": "Anolis OS 8",
+    "logo_url": null,
+    "iso_download_url": "https://iso.loongnix.cn/anolis-8.iso",
+    "abi": 1
+  }
+]

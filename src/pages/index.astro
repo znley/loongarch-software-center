@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="首页">
+  <div class="text-center py-12">
+    <h1 class="text-3xl font-bold mb-3">龙架构软件中心</h1>
+    <p class="text-gray-600 text-lg mb-8">
+      选择你的操作系统，获取软件源和软件包信息。
+    </p>
+
+    <div id="os-hint" class="max-w-lg mx-auto mb-8 hidden">
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p class="text-blue-800">
+          当前选择: <span id="current-os" class="font-semibold"></span>
+        </p>
+      </div>
+    </div>
+
+    <div id="no-os-hint" class="max-w-lg mx-auto mb-8">
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p class="text-yellow-800">
+          请先在右上角选择您的操作系统
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+    <a href="/iso" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <div class="flex items-center gap-4">
+        <span class="text-4xl">💿</span>
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">系统下载</h2>
+          <p class="text-sm text-gray-500 mt-1">下载 LoongArch 操作系统 ISO 镜像</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="/sources" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <div class="flex items-center gap-4">
+        <span class="text-4xl">📦</span>
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">软件源</h2>
+          <p class="text-sm text-gray-500 mt-1">配置 PyPI、npm、Maven 等软件源</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="/packages" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <div class="flex items-center gap-4">
+        <span class="text-4xl">📁</span>
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">软件包</h2>
+          <p class="text-sm text-gray-500 mt-1">浏览和下载软件包</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <script>
+    window.addEventListener('osChanged', (e) => {
+      const selector = document.getElementById('os-selector');
+      const selectedOption = selector?.options[selector.selectedIndex];
+
+      if (selectedOption && selectedOption.value) {
+        const osHint = document.getElementById('os-hint');
+        const noOsHint = document.getElementById('no-os-hint');
+        const currentOs = document.getElementById('current-os');
+
+        if (osHint && noOsHint && currentOs) {
+          currentOs.textContent = selectedOption.textContent;
+          osHint.classList.remove('hidden');
+          noOsHint.classList.add('hidden');
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedId = localStorage.getItem('lasc_selected_os');
+      if (savedId) {
+        const selector = document.getElementById('os-selector');
+        if (selector) {
+          selector.value = savedId;
+          selector.dispatchEvent(new Event('change'));
+        }
+      }
+    });
+  </script>
+</Layout>

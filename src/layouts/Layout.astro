@@ -1,0 +1,116 @@
+---
+import { getDistros } from '../lib/data';
+
+export interface Props {
+  title: string;
+  lang?: string;
+}
+
+const { title, lang = "zh" } = Astro.props;
+const distros = getDistros();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} - 龙架构软件中心</title>
+    <style>
+      :root {
+        --color-primary: #2563eb;
+        --color-primary-hover: #1d4ed8;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="flex items-center gap-2">
+            <span class="text-xl font-bold text-gray-800">龙架构软件中心</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="/" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">首页</a>
+            <a href="/iso" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">系统下载</a>
+            <a href="/sources" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">软件源</a>
+            <a href="/packages" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">软件包</a>
+          </nav>
+
+          <div class="flex items-center gap-3">
+            <label class="text-sm text-gray-500">操作系统:</label>
+            <select
+              id="os-selector"
+              class="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">选择操作系统...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-200 mt-12">
+      <div class="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-gray-500">
+        LoongArch Software Center
+      </div>
+    </footer>
+
+    <script define:vars={{ distros }}>
+      const STORAGE_KEY = 'lasc_selected_os';
+
+      function initSelector() {
+        const selector = document.getElementById('os-selector');
+        if (!selector) return;
+
+        distros.forEach((d) => {
+          const option = document.createElement('option');
+          option.value = d.id.toString();
+          option.textContent = d.display_name || d.distro + ' ' + d.version;
+          option.dataset.abi = d.abi.toString();
+          option.dataset.isoUrl = d.iso_download_url;
+          selector.appendChild(option);
+        });
+
+        const savedId = localStorage.getItem(STORAGE_KEY);
+        if (savedId) {
+          selector.value = savedId;
+        }
+
+        selector.addEventListener('change', updateAbiInfo);
+      }
+
+      function updateAbiInfo() {
+        const selector = document.getElementById('os-selector');
+        const selectedOption = selector?.options[selector.selectedIndex];
+
+        if (selectedOption && selectedOption.value) {
+          const abi = selectedOption.dataset.abi;
+          const isoUrl = selectedOption.dataset.isoUrl;
+
+          localStorage.setItem(STORAGE_KEY, selector.value);
+          localStorage.setItem('lasc_abi', abi || '');
+          localStorage.setItem('lasc_iso_url', isoUrl || '');
+
+          window.dispatchEvent(new CustomEvent('osChanged', {
+            detail: { abi, isoUrl, distroId: selector.value }
+          }));
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', initSelector);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .nav-link.active {
+    color: #2563eb;
+    font-weight: 600;
+  }
+</style>

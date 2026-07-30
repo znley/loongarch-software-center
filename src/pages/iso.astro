@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getDistros } from '../lib/data';
+
+const distros = getDistros();
+const distroTypes = [...new Set(distros.map(d => d.distro))];
+---
+
+<Layout title="系统下载">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-2xl font-bold mb-8 text-center text-gray-800">系统下载</h1>
+
+    <div class="flex justify-center mb-8">
+      <div class="relative">
+        <label for="os-type-select" class="sr-only">选择操作系统类型</label>
+        <select
+          id="os-type-select"
+          class="appearance-none bg-white border border-gray-200 rounded-md px-4 py-2 pr-8 text-sm text-gray-700 focus:outline-none focus:border-blue-400 cursor-pointer"
+        >
+          <option value="">全部操作系统</option>
+          {distroTypes.map(type => (
+            <option value={type}>{type}</option>
+          ))}
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div id="iso-list" class="space-y-2"></div>
+
+    <div id="no-result" class="hidden text-center text-gray-400 py-12">
+      <p class="text-sm">暂无可用的 ISO 镜像</p>
+    </div>
+  </div>
+
+  <script define:vars={{ distros }}>
+    function renderRow(d) {
+      const icon = d.logo_url
+        ? '<img src="' + d.logo_url + '" alt="' + d.distro + '" class="w-8 h-8 object-contain rounded">'
+        : '<span class="text-xl">🐧</span>';
+
+      return '<div class="flex items-center justify-between bg-white border border-gray-100 rounded-md px-5 py-3 hover:bg-gray-50 transition">' +
+        '<div class="flex items-center gap-4">' +
+        icon +
+        '<span class="text-sm font-medium text-gray-800">' + (d.display_name || d.distro + ' ' + d.version) + '</span>' +
+        '</div>' +
+        '<div class="flex items-center gap-6">' +
+        '<span class="text-xs text-gray-400">v' + d.version + '</span>' +
+        '<a href="' + d.iso_download_url + '" target="_blank" class="px-3.5 py-1.5 border border-blue-500 text-blue-500 text-xs rounded hover:bg-blue-500 hover:text-white transition">下载</a>' +
+        '</div>' +
+        '</div>';
+    }
+
+    function renderList(distroType) {
+      const isoList = document.getElementById('iso-list');
+      const noResult = document.getElementById('no-result');
+      let filtered = distros;
+
+      if (distroType) {
+        filtered = distros.filter(d => d.distro === distroType);
+      }
+
+      if (filtered.length === 0) {
+        isoList.classList.add('hidden');
+        noResult.classList.remove('hidden');
+        return;
+      }
+
+      noResult.classList.add('hidden');
+      isoList.innerHTML = filtered.map(renderRow).join('');
+      isoList.classList.remove('hidden');
+    }
+
+    document.getElementById('os-type-select').addEventListener('change', (e) => {
+      renderList(e.target.value);
+    });
+
+    renderList('');
+  </script>
+</Layout>
