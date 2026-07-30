@@ -10,7 +10,6 @@ export interface Props {
 const { title, lang = "zh" } = Astro.props;
 const distros = getDistros();
 
-// 展开所有版本，用于选择器
 const allVersions = distros.flatMap((d, distroIndex) => 
   d.versions.map((v, versionIndex) => ({
     id: distroIndex * 100 + versionIndex,
@@ -53,7 +52,7 @@ const allVersions = distros.flatMap((d, distroIndex) =>
             <a href="/packages" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">软件包</a>
           </nav>
 
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3" id="os-selector-wrapper">
             <label class="text-sm text-gray-500">操作系统:</label>
             <select
               id="os-selector"
@@ -65,6 +64,16 @@ const allVersions = distros.flatMap((d, distroIndex) =>
         </div>
       </div>
     </header>
+
+    <!-- 全局提示 -->
+    <div id="global-hint" class="hidden bg-blue-50 border-b border-blue-100">
+      <div class="max-w-6xl mx-auto px-4 py-2 text-center">
+        <span class="text-sm text-blue-700">
+          当前配置：<span id="current-system" class="font-medium"></span>
+          <span class="text-blue-500 ml-2">以下内容仅适用于该系统</span>
+        </span>
+      </div>
+    </div>
 
     <main class="max-w-6xl mx-auto px-4 py-8">
       <slot />
@@ -103,6 +112,9 @@ const allVersions = distros.flatMap((d, distroIndex) =>
       function updateAbiInfo() {
         const selector = document.getElementById('os-selector');
         const selectedOption = selector?.options[selector.selectedIndex];
+        const wrapper = document.getElementById('os-selector-wrapper');
+        const globalHint = document.getElementById('global-hint');
+        const currentSystem = document.getElementById('current-system');
 
         if (selectedOption && selectedOption.value) {
           const abi = selectedOption.dataset.abi;
@@ -112,9 +124,28 @@ const allVersions = distros.flatMap((d, distroIndex) =>
           localStorage.setItem('lasc_abi', abi || '');
           localStorage.setItem('lasc_iso_url', isoUrl || '');
 
+          // 高亮下拉菜单
+          if (wrapper) {
+            wrapper.classList.add('bg-blue-50', 'px-3', 'py-1', '-mx-3', '-my-1', 'rounded-lg', 'border', 'border-blue-200');
+          }
+
+          // 显示全局提示
+          if (globalHint && currentSystem) {
+            currentSystem.textContent = selectedOption.textContent;
+            globalHint.classList.remove('hidden');
+          }
+
           window.dispatchEvent(new CustomEvent('osChanged', {
             detail: { abi, isoUrl, distroId: selector.value }
           }));
+        } else {
+          // 未选择系统，移除高亮和提示
+          if (wrapper) {
+            wrapper.classList.remove('bg-blue-50', 'px-3', 'py-1', '-mx-3', '-my-1', 'rounded-lg', 'border', 'border-blue-200');
+          }
+          if (globalHint) {
+            globalHint.classList.add('hidden');
+          }
         }
       }
 
