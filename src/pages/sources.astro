@@ -32,7 +32,7 @@ const sourceKeys = Object.keys(sources);
     </div>
   </div>
 
-  <script define:vars={{ sources }}>
+  <script define:vars={{ sources, sourceKeys }}>
     let currentAbi = null;
     let currentTab = sourceKeys[0];
 
@@ -124,11 +124,13 @@ const sourceKeys = Object.keys(sources);
       updateUI();
     });
 
-    const savedAbi = localStorage.getItem('lasc_abi');
-    if (savedAbi) {
-      currentAbi = parseInt(savedAbi);
-      setActiveTab(sourceKeys[0]);
-      updateUI();
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedAbi = localStorage.getItem('lasc_abi');
+      if (savedAbi) {
+        currentAbi = parseInt(savedAbi);
+        setActiveTab(sourceKeys[0]);
+        updateUI();
+      }
+    });
   </script>
 </Layout>

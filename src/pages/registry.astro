@@ -73,9 +73,11 @@ import Layout from '../layouts/Layout.astro';
 
     window.addEventListener('osChanged', updateRegistry);
 
-    const savedAbi = localStorage.getItem('lasc_abi');
-    if (savedAbi) {
-      updateRegistry();
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedAbi = localStorage.getItem('lasc_abi');
+      if (savedAbi) {
+        updateRegistry();
+      }
+    });
   </script>
 </Layout>
