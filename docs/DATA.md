@@ -36,8 +36,8 @@
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| distro | string | 是 | 发行版名称 (如 Loongnix, UOS, Anolis) |
-| logo_url | string \| null | 否 | Logo 图片 URL，为 null 时显示默认图标 |
+| distro | string | 是 | 发行版名称 |
+| logo_url | string \| null | 否 | Logo 图片 URL |
 | display_name | string | 是 | 显示名称 |
 | versions | array | 是 | 版本列表 |
 
@@ -49,48 +49,12 @@
 | abi | number | 是 | ABI 版本 (1 或 2) |
 | iso_download_url | string | 是 | ISO 下载链接 |
 
-### 示例数据
-
-```json
-[
-  {
-    "distro": "Loongnix",
-    "logo_url": null,
-    "display_name": "Loongnix",
-    "versions": [
-      {
-        "version": "22.04",
-        "abi": 1,
-        "iso_download_url": "https://iso.loongnix.cn/loongnix-22.04.iso"
-      },
-      {
-        "version": "24.04",
-        "abi": 2,
-        "iso_download_url": "https://iso.loongnix.cn/loongnix-24.04.iso"
-      }
-    ]
-  },
-  {
-    "distro": "UOS",
-    "logo_url": null,
-    "display_name": "UOS",
-    "versions": [
-      {
-        "version": "20",
-        "abi": 1,
-        "iso_download_url": "https://iso.loongnix.cn/uos-20.iso"
-      }
-    ]
-  }
-]
-```
-
 ---
 
 ## sources.json
 
 ### 用途
-存储软件源配置信息，用于软件源页面。
+存储软件源、容器镜像仓库、软件包服务器的配置信息。
 
 ### 数据结构
 
@@ -113,70 +77,37 @@
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | name | string | 是 | 显示名称 |
-| command | string | 否 | 快速安装命令模板 |
-| config | string | 否 | 配置文件内容模板 |
+| command | string | 否 | 命令模板 |
+| config | string | 否 | 配置文件模板 |
 | abis | object | 是 | 各 ABI 版本的 URL |
 
-### 命令模板变量
+### 配置项
+
+| Key | 说明 |
+|-----|------|
+| pypi | PyPI 软件源 |
+| npm | npm 软件源 |
+| maven | Maven 软件源 |
+| cargo | Cargo 软件源 |
+| container_registry | 容器镜像仓库 |
+| packages | 软件包服务器 |
+
+### 模板变量
 
 | 变量 | 说明 |
 |------|------|
-| {url} | 对应 ABI 版本的软件源 URL |
-
-### 示例数据
-
-```json
-{
-  "pypi": {
-    "name": "PyPI (Python)",
-    "command": "pip install <package> -i {url}",
-    "config": "# ~/.pip/pip.conf\n[global]\nindex-url = {url}",
-    "abis": {
-      "1": "https://pypi.loongnix.cn/abi1/simple",
-      "2": "https://pypi.loongnix.cn/abi2/simple"
-    }
-  },
-  "npm": {
-    "name": "npm (Node.js)",
-    "command": "npm config set registry {url}",
-    "config": "// .npmrc\nregistry = \"{url}\"",
-    "abis": {
-      "1": "https://npm.loongnix.cn/abi1/",
-      "2": "https://npm.loongnix.cn/abi2/"
-    }
-  },
-  "maven": {
-    "name": "Maven (Java)",
-    "command": "",
-    "config": "<!-- settings.xml -->\n<mirror>\n  <id>loongarch</id>\n  <url>{url}</url>\n</mirror>",
-    "abis": {
-      "1": "https://maven.loongnix.cn/abi1/",
-      "2": "https://maven.loongnix.cn/abi2/"
-    }
-  },
-  "cargo": {
-    "name": "Cargo (Rust)",
-    "command": "",
-    "config": "# ~/.cargo/config.toml\n[source.crates-io]\nreplace-with = \"loongarch\"\n\n[source.loongarch]\nregistry = \"{url}\"",
-    "abis": {
-      "1": "https://cargo.loongnix.cn/abi1/",
-      "2": "https://cargo.loongnix.cn/abi2/"
-    }
-  }
-}
-```
+| {url} | 对应 ABI 版本的 URL |
 
 ---
 
 ## 数据更新流程
 
-1. 编辑对应的 JSON 文件
-2. 运行 `npm run build` 重新生成静态文件
+1. 编辑 JSON 文件
+2. 运行 `npm run build`
 3. 部署 dist/ 目录
 
 ## 注意事项
 
-- JSON 文件修改后需要重新构建
-- ABI 版本目前支持 1 和 2
-- abis 中的 key 必须为字符串格式的数字 ("1", "2")
-- 配置文件模板中的换行符使用 \n
+- ABI 版本支持 1 和 2
+- abis 中的 key 必须为字符串 ("1", "2")
+- 模板中换行符使用 \n
