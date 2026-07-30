@@ -4,8 +4,8 @@
     "command": "docker pull {url}/<image-name>",
     "config": "{\n  \"insecure-registries\": [\"{url}\"]\n}",
     "abis": {
-      "1": "https://registry.loongnix.cn/abi1",
-      "2": "https://registry.loongnix.cn/abi2"
+      "1": "https://cr.loongnix.cn",
+      "2": "https://lcr.loongnix.cn"
     }
   },
   "packages": {
@@ -13,8 +13,8 @@
     "command": "",
     "config": "",
     "abis": {
-      "1": "https://packages.loongnix.cn/abi1",
-      "2": "https://packages.loongnix.cn/abi2"
+      "1": "https://cloud.loongnix.cn/releases/loongarch64abi1",
+      "2": "https://cloud.loongnix.cn/releases/loongarch64"
     }
   }
 }

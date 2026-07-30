@@ -4,8 +4,8 @@
     "command": "pip install <package> -i {url}",
     "config": "# ~/.pip/pip.conf\n[global]\nindex-url = {url}",
     "abis": {
-      "1": "https://pypi.loongnix.cn/abi1/simple",
-      "2": "https://pypi.loongnix.cn/abi2/simple"
+      "1": "https://pypi.loongnix.cn/loongson/pypi/+simple",
+      "2": "https://lpypi.loongnix.cn/loongson/pypi/+simple"
     }
   },
   "npm": {
@@ -13,8 +13,8 @@
     "command": "npm config set registry {url}",
     "config": "// .npmrc\nregistry = \"{url}\"",
     "abis": {
-      "1": "https://npm.loongnix.cn/abi1/",
-      "2": "https://npm.loongnix.cn/abi2/"
+      "1": "https://registry.loongnix.cn",
+      "2": "https://registry.loongnix.cn"
     }
   },
   "maven": {
@@ -22,17 +22,8 @@
     "command": "",
     "config": "<!-- settings.xml -->\n<mirror>\n  <id>loongarch</id>\n  <url>{url}</url>\n</mirror>",
     "abis": {
-      "1": "https://maven.loongnix.cn/abi1/",
-      "2": "https://maven.loongnix.cn/abi2/"
-    }
-  },
-  "cargo": {
-    "name": "Cargo (Rust)",
-    "command": "",
-    "config": "# ~/.cargo/config.toml\n[source.crates-io]\nreplace-with = \"loongarch\"\n\n[source.loongarch]\nregistry = \"{url}\"",
-    "abis": {
-      "1": "https://cargo.loongnix.cn/abi1/",
-      "2": "https://cargo.loongnix.cn/abi2/"
+      "1": "https://maven.loongnix.cn/loongarchabi1/maven",
+      "2": "https://maven.loongnix.cn/loongarch/maven"
     }
   }
 }
