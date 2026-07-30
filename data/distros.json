@@ -5,26 +5,31 @@
     "display_name": "Loongnix",
     "versions": [
       {
-        "version": "22.04",
+        "version": "20",
         "abi": 1,
-        "iso_download_url": "https://iso.loongnix.cn/loongnix-22.04.iso"
+        "iso_download_url": "https://pkg.loongnix.cn/loongnix/20/isos/"
       },
       {
-        "version": "24.04",
+        "version": "25",
         "abi": 2,
-        "iso_download_url": "https://iso.loongnix.cn/loongnix-24.04.iso"
+        "iso_download_url": "https://pkg.loongnix.cn/loongnix/25/isos/"
       }
     ]
   },
   {
-    "distro": "UOS",
+    "distro": "Loongnix-Server",
     "logo_url": null,
-    "display_name": "UOS",
+    "display_name": "Loongnix Server",
     "versions": [
       {
-        "version": "20",
+        "version": "8",
         "abi": 1,
-        "iso_download_url": "https://iso.loongnix.cn/uos-20.iso"
+        "iso_download_url": "https://pkg.loongnix.cn/loongnix-server/8.4/isos/8.4.0"
+      },
+      {
+        "version": "23",
+        "abi": 2,
+        "iso_download_url": "https://pkg.loongnix.cn/loongnix-server/23.2/isos"
       }
     ]
   },
