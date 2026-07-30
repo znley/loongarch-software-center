@@ -38,6 +38,17 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
   </div>
 
   <script define:vars={{ distros }}>
+    // 展开所有版本
+    const allVersions = distros.flatMap((d) => 
+      d.versions.map((v) => ({
+        distro: d.distro,
+        version: v.version,
+        display_name: d.display_name + ' ' + v.version,
+        logo_url: d.logo_url,
+        iso_download_url: v.iso_download_url
+      }))
+    );
+
     function renderRow(d) {
       const icon = d.logo_url
         ? '<img src="' + d.logo_url + '" alt="' + d.distro + '" class="w-8 h-8 object-contain rounded">'
@@ -46,7 +57,7 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
       return '<div class="flex items-center justify-between bg-white border border-gray-100 rounded-md px-5 py-3 hover:bg-gray-50 transition">' +
         '<div class="flex items-center gap-4">' +
         icon +
-        '<span class="text-sm font-medium text-gray-800">' + (d.display_name || d.distro + ' ' + d.version) + '</span>' +
+        '<span class="text-sm font-medium text-gray-800">' + d.display_name + '</span>' +
         '</div>' +
         '<div class="flex items-center gap-6">' +
         '<span class="text-xs text-gray-400">v' + d.version + '</span>' +
@@ -58,10 +69,10 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
     function renderList(distroType) {
       const isoList = document.getElementById('iso-list');
       const noResult = document.getElementById('no-result');
-      let filtered = distros;
+      let filtered = allVersions;
 
       if (distroType) {
-        filtered = distros.filter(d => d.distro === distroType);
+        filtered = allVersions.filter(d => d.distro === distroType);
       }
 
       if (filtered.length === 0) {

@@ -1,21 +1,24 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-export interface Distro {
-  id: number;
-  distro: string;
+export interface DistroVersion {
   version: string;
-  display_name: string;
-  logo_url: string | null;
-  iso_download_url: string;
   abi: number;
+  iso_download_url: string;
+}
+
+export interface Distro {
+  distro: string;
+  logo_url: string | null;
+  display_name: string;
+  versions: DistroVersion[];
 }
 
 export interface SourceConfig {
   name: string;
   command: string;
   config: string;
-  urls: Record<string, string>;
+  abis: Record<string, string>;
 }
 
 export function getDistros(): Distro[] {
@@ -34,5 +37,5 @@ export function getSourceUrl(sourceType: string, abi: number): string | null {
   const sources = getSources();
   const source = sources[sourceType];
   if (!source) return null;
-  return source.urls[abi.toString()] || null;
+  return source.abis[abi.toString()] || null;
 }

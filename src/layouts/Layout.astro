@@ -9,6 +9,19 @@ export interface Props {
 
 const { title, lang = "zh" } = Astro.props;
 const distros = getDistros();
+
+// 展开所有版本，用于选择器
+const allVersions = distros.flatMap((d, distroIndex) => 
+  d.versions.map((v, versionIndex) => ({
+    id: distroIndex * 100 + versionIndex,
+    distro: d.distro,
+    version: v.version,
+    display_name: d.display_name + ' ' + v.version,
+    logo_url: d.logo_url,
+    iso_download_url: v.iso_download_url,
+    abi: v.abi
+  }))
+);
 ---
 
 <!doctype html>
@@ -63,17 +76,17 @@ const distros = getDistros();
       </div>
     </footer>
 
-    <script define:vars={{ distros }}>
+    <script define:vars={{ allVersions }}>
       const STORAGE_KEY = 'lasc_selected_os';
 
       function initSelector() {
         const selector = document.getElementById('os-selector');
         if (!selector) return;
 
-        distros.forEach((d) => {
+        allVersions.forEach((d) => {
           const option = document.createElement('option');
           option.value = d.id.toString();
-          option.textContent = d.display_name || d.distro + ' ' + d.version;
+          option.textContent = d.display_name;
           option.dataset.abi = d.abi.toString();
           option.dataset.isoUrl = d.iso_download_url;
           selector.appendChild(option);
@@ -105,13 +118,11 @@ const distros = getDistros();
         }
       }
 
-      // 立即初始化并触发事件
       document.addEventListener('DOMContentLoaded', () => {
         initSelector();
         updateAbiInfo();
       });
 
-      // 如果 DOM 已加载完成，立即执行
       if (document.readyState !== 'loading') {
         initSelector();
         updateAbiInfo();

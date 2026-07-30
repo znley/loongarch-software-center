@@ -63,7 +63,7 @@ const sourceKeys = Object.keys(sources);
       const source = sources[currentTab];
       if (!source) return;
 
-      const url = source.urls[currentAbi.toString()];
+      const url = source.abis[currentAbi.toString()];
       if (!url) {
         content.innerHTML = '<p class="text-gray-400 text-sm">暂无配置</p>';
         return;
