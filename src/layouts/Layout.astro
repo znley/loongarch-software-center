@@ -52,7 +52,7 @@ const allVersions = distros.flatMap((d, distroIndex) =>
             <a href="/packages" class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition">软件包</a>
           </nav>
 
-          <div class="flex items-center gap-3" id="os-selector-wrapper">
+          <div class="flex items-center gap-3">
             <label class="text-sm text-gray-500">操作系统:</label>
             <select
               id="os-selector"
@@ -112,7 +112,6 @@ const allVersions = distros.flatMap((d, distroIndex) =>
       function updateAbiInfo() {
         const selector = document.getElementById('os-selector');
         const selectedOption = selector?.options[selector.selectedIndex];
-        const wrapper = document.getElementById('os-selector-wrapper');
         const globalHint = document.getElementById('global-hint');
         const currentSystem = document.getElementById('current-system');
 
@@ -124,11 +123,6 @@ const allVersions = distros.flatMap((d, distroIndex) =>
           localStorage.setItem('lasc_abi', abi || '');
           localStorage.setItem('lasc_iso_url', isoUrl || '');
 
-          // 高亮下拉菜单
-          if (wrapper) {
-            wrapper.classList.add('bg-blue-50', 'px-3', 'py-1', '-mx-3', '-my-1', 'rounded-lg', 'border', 'border-blue-200');
-          }
-
           // 显示全局提示
           if (globalHint && currentSystem) {
             currentSystem.textContent = selectedOption.textContent;
@@ -139,10 +133,7 @@ const allVersions = distros.flatMap((d, distroIndex) =>
             detail: { abi, isoUrl, distroId: selector.value }
           }));
         } else {
-          // 未选择系统，移除高亮和提示
-          if (wrapper) {
-            wrapper.classList.remove('bg-blue-50', 'px-3', 'py-1', '-mx-3', '-my-1', 'rounded-lg', 'border', 'border-blue-200');
-          }
+          // 未选择系统，移除提示
           if (globalHint) {
             globalHint.classList.add('hidden');
           }
