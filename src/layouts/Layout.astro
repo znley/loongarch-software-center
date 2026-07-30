@@ -85,7 +85,6 @@ const distros = getDistros();
         }
 
         selector.addEventListener('change', updateAbiInfo);
-        updateAbiInfo();
       }
 
       function updateAbiInfo() {
@@ -106,7 +105,17 @@ const distros = getDistros();
         }
       }
 
-      document.addEventListener('DOMContentLoaded', initSelector);
+      // 立即初始化并触发事件
+      document.addEventListener('DOMContentLoaded', () => {
+        initSelector();
+        updateAbiInfo();
+      });
+
+      // 如果 DOM 已加载完成，立即执行
+      if (document.readyState !== 'loading') {
+        initSelector();
+        updateAbiInfo();
+      }
     </script>
   </body>
 </html>
