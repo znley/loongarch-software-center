@@ -68,10 +68,10 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
     function renderList(distroType) {
       const isoList = document.getElementById('iso-list');
       const noResult = document.getElementById('no-result');
-      let filtered = distros;
+      let filtered = allVersions;
 
       if (distroType) {
-        filtered = distros.filter(d => d.distro === distroType);
+        filtered = allVersions.filter(d => d.distro === distroType);
       }
 
       if (filtered.length === 0) {
