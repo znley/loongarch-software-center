@@ -34,23 +34,5 @@
       "1": "https://cargo.loongnix.cn/abi1/",
       "2": "https://cargo.loongnix.cn/abi2/"
     }
-  },
-  "container_registry": {
-    "name": "容器镜像仓库",
-    "command": "docker pull {url}/<image-name>",
-    "config": "{\n  \"insecure-registries\": [\"{url}\"]\n}",
-    "abis": {
-      "1": "https://registry.loongnix.cn/abi1",
-      "2": "https://registry.loongnix.cn/abi2"
-    }
-  },
-  "packages": {
-    "name": "软件包",
-    "command": "",
-    "config": "",
-    "abis": {
-      "1": "https://packages.loongnix.cn/abi1",
-      "2": "https://packages.loongnix.cn/abi2"
-    }
   }
 }

@@ -33,9 +33,22 @@ export function getSources(): Record<string, SourceConfig> {
   return JSON.parse(raw) as Record<string, SourceConfig>;
 }
 
+export function getEndpoints(): Record<string, SourceConfig> {
+  const dataPath = join(process.cwd(), 'data', 'endpoints.json');
+  const raw = readFileSync(dataPath, 'utf-8');
+  return JSON.parse(raw) as Record<string, SourceConfig>;
+}
+
 export function getSourceUrl(sourceType: string, abi: number): string | null {
   const sources = getSources();
   const source = sources[sourceType];
   if (!source) return null;
   return source.abis[abi.toString()] || null;
+}
+
+export function getEndpointUrl(endpointType: string, abi: number): string | null {
+  const endpoints = getEndpoints();
+  const endpoint = endpoints[endpointType];
+  if (!endpoint) return null;
+  return endpoint.abis[abi.toString()] || null;
 }

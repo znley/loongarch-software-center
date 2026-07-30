@@ -1,9 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getSources } from '../lib/data';
+import { getEndpoints } from '../lib/data';
 
-const sources = getSources();
-const registryConfig = sources['container_registry'];
+const endpoints = getEndpoints();
+const registryConfig = endpoints['container_registry'];
 ---
 
 <Layout title="容器镜像">

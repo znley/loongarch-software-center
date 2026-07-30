@@ -1,9 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getSources } from '../lib/data';
+import { getEndpoints } from '../lib/data';
 
-const sources = getSources();
-const packagesConfig = sources['packages'];
+const endpoints = getEndpoints();
+const packagesConfig = endpoints['packages'];
 ---
 
 <Layout title="软件包">
