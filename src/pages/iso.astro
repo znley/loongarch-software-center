@@ -51,7 +51,7 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
     function renderRow(d) {
       const icon = d.logo_url
         ? '<img src="' + d.logo_url + '" alt="' + d.distro + '" class="w-8 h-8 object-contain rounded">'
-        : '<span class="text-xl">🐧</span>';
+        : '<img src="/icons/penguin.svg" alt="企鹅" class="w-8 h-8">';
 
       return '<div class="flex items-center justify-between bg-white border border-gray-300 rounded-lg px-5 py-4 mb-3 hover:border-gray-400 transition">' +
         '<div class="flex items-center gap-4">' +

@@ -34,6 +34,43 @@ const sourceKeys = Object.keys(sources);
   </div>
 
   <script define:vars={{ sources, sourceKeys }}>
+
+    window.copyToClipboard = function(btn) {
+      const text = btn.getAttribute('data-copy');
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          showCopied(btn);
+        }).catch(() => {
+          fallbackCopy(text, btn);
+        });
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showCopied(btn);
+    }
+
+    window.showCopied = function(btn) {
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>已复制';
+      btn.classList.add('text-green-500');
+      btn.classList.remove('text-blue-500');
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('text-green-500');
+        btn.classList.add('text-blue-500');
+      }, 1500);
+    }
     let currentAbi = null;
     let currentTab = sourceKeys[0];
 
@@ -73,26 +110,43 @@ const sourceKeys = Object.keys(sources);
       let html = '';
 
       html += '<div class="mb-6">' +
-        '<p class="text-sm font-medium text-gray-600 mb-2">源地址</p>' +
+        '<div class="flex items-center justify-between mb-2">' +
+        '<p class="text-sm font-medium text-gray-600">源地址</p>' +
+        '<button data-copy="' + escapeHtml(url) + '" onclick="copyToClipboard(this)" class="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1 copy-btn">' +
+        '<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z\"></path></svg>' +
+        '复制</button>' +
+        '</div>' +
         '<div class="bg-gray-50 border border-gray-100 rounded px-4 py-3">' +
         '<code class="text-sm text-gray-700 break-all">' + escapeHtml(url) + '</code>' +
         '</div>' +
         '</div>';
 
       if (source.command) {
+        const cmdText = escapeHtml(source.command.replace('{url}', url));
         html += '<div class="mb-6">' +
-          '<p class="text-sm font-medium text-gray-600 mb-2">快速安装</p>' +
+          '<div class="flex items-center justify-between mb-2">' +
+          '<p class="text-sm font-medium text-gray-600">快速安装</p>' +
+          '<button data-copy="' + cmdText + '" onclick="copyToClipboard(this)" class="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1 copy-btn">' +
+          '<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z\"></path></svg>' +
+          '复制</button>' +
+          '</div>' +
           '<div class="bg-gray-50 border border-gray-100 rounded px-4 py-3">' +
-          '<code class="text-sm text-gray-700">' + escapeHtml(source.command.replace('{url}', url)) + '</code>' +
+          '<code class="text-sm text-gray-700">' + cmdText + '</code>' +
           '</div>' +
           '</div>';
       }
 
       if (source.config) {
+        const cfgText = escapeHtml(source.config.replace('{url}', url));
         html += '<div>' +
-          '<p class="text-sm font-medium text-gray-600 mb-2">配置文件</p>' +
+          '<div class="flex items-center justify-between mb-2">' +
+          '<p class="text-sm font-medium text-gray-600">配置文件</p>' +
+          '<button data-copy="' + cfgText + '" onclick="copyToClipboard(this)" class="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1 copy-btn">' +
+          '<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z\"></path></svg>' +
+          '复制</button>' +
+          '</div>' +
           '<pre class="bg-gray-50 border border-gray-100 rounded px-4 py-3 text-sm text-gray-700 overflow-x-auto whitespace-pre-wrap"><code>' +
-          escapeHtml(source.config.replace('{url}', url)) + '</code></pre>' +
+          cfgText + '</code></pre>' +
           '</div>';
       }
 
