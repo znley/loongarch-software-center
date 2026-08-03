@@ -8,7 +8,8 @@ export interface Props {
 }
 
 const { title, lang = "zh" } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL || '/';
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 const distros = getDistros();
 
 const allVersions = distros.flatMap((d, distroIndex) => 
