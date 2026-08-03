@@ -34,14 +34,36 @@
     ]
   },
   {
-    "distro": "Anolis",
+    "distro": "OpenEuler",
+    "logo_url": null,
+    "display_name": "OpenEuler",
+    "versions": [
+      {
+        "version": "22.03",
+        "abi": 2,
+        "iso_download_url": "https://dl-cdn.openeuler.openatom.cn"
+      },
+      {
+        "version": "24.03",
+        "abi": 2,
+        "iso_download_url": "https://dl-cdn.openeuler.openatom.cn"
+      }
+    ]
+  },
+  {
+    "distro": "OpenAnolis",
     "logo_url": null,
     "display_name": "Anolis OS",
     "versions": [
       {
         "version": "8",
         "abi": 1,
-        "iso_download_url": "https://iso.loongnix.cn/anolis-8.iso"
+        "iso_download_url": "https://mirrors.openanolis.cn/anolis/8/isos/GA/loongarch64"
+      },
+      {
+        "version": "23",
+        "abi": 2,
+        "iso_download_url": "https://mirrors.openanolis.cn/anolis/23/isos/GA/loongarch64"
       }
     ]
   }
