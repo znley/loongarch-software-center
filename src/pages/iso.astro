@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { getDistros } from '../lib/data';
 
+const base = import.meta.env.BASE_URL;
 const distros = getDistros();
 const distroTypes = [...new Set(distros.map(d => d.distro))];
 ---
@@ -37,7 +38,7 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
     </div>
   </div>
 
-  <script define:vars={{ distros }}>
+  <script define:vars={{ distros, base }}>
     const allVersions = distros.flatMap((d) => 
       d.versions.map((v) => ({
         distro: d.distro,
@@ -50,17 +51,17 @@ const distroTypes = [...new Set(distros.map(d => d.distro))];
 
     function renderRow(d) {
       const icon = d.logo_url
-        ? '<img src="' + d.logo_url + '" alt="' + d.distro + '" class="w-8 h-8 object-contain rounded">'
-        : '<img src="/icons/penguin.svg" alt="企鹅" class="w-8 h-8">';
+        ? '<img src=\"' + d.logo_url + '\" alt=\"' + d.distro + '\" class=\"w-8 h-8 object-contain rounded\">'
+        : '<img src=\"' + base + 'icons/penguin.svg\" alt=\"企鹅\" class=\"w-8 h-8\">';
 
-      return '<div class="flex items-center justify-between bg-white border border-gray-300 rounded-lg px-5 py-4 mb-3 hover:border-gray-400 transition">' +
-        '<div class="flex items-center gap-4">' +
+      return '<div class=\"flex items-center justify-between bg-white border border-gray-300 rounded-lg px-5 py-4 mb-3 hover:border-gray-400 transition\">' +
+        '<div class=\"flex items-center gap-4\">' +
         icon +
         '<div>' +
-        '<span class="text-sm font-medium text-gray-800 block">' + d.display_name + '</span>' +
+        '<span class=\"text-sm font-medium text-gray-800 block\">' + d.display_name + '</span>' +
         '</div>' +
         '</div>' +
-        '<a href="' + d.iso_download_url + '" target="_blank" class="px-4 py-2 bg-white border border-gray-300 text-gray-600 text-sm rounded hover:border-gray-400 hover:text-gray-800 transition">下载</a>' +
+        '<a href=\"' + d.iso_download_url + '\" target=\"_blank\" class=\"px-4 py-2 bg-white border border-gray-300 text-gray-600 text-sm rounded hover:border-gray-400 hover:text-gray-800 transition\">下载</a>' +
         '</div>';
     }
 

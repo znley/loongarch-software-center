@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="首页">
@@ -13,7 +15,7 @@ import Layout from '../layouts/Layout.astro';
     <div id="no-os-hint" class="max-w-lg mx-auto mb-8">
       <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
         <div class="flex items-center gap-3 mb-3">
-          <img src="/icons/warning.svg" alt="警告" class="w-8 h-8">
+          <img src={`${base}icons/warning.svg`} alt="警告" class="w-8 h-8">
           <p class="text-yellow-800 font-medium">请先选择您的操作系统</p>
         </div>
         <p class="text-yellow-700 text-sm mb-4">
@@ -27,9 +29,9 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- 功能入口 -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-      <a href="/iso" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <a href={`${base}iso`} class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
         <div class="flex items-center gap-4">
-          <img src="/icons/disc.svg" alt="光盘" class="w-10 h-10">
+          <img src={`${base}icons/disc.svg`} alt="光盘" class="w-10 h-10">
           <div>
             <h2 class="text-lg font-semibold text-gray-800">系统下载</h2>
             <p class="text-sm text-gray-500 mt-1">下载 LoongArch 操作系统 ISO 镜像</p>
@@ -37,9 +39,9 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </a>
 
-      <a href="/sources" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <a href={`${base}sources`} class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
         <div class="flex items-center gap-4">
-          <img src="/icons/package.svg" alt="包裹" class="w-10 h-10">
+          <img src={`${base}icons/package.svg`} alt="包裹" class="w-10 h-10">
           <div>
             <h2 class="text-lg font-semibold text-gray-800">软件源</h2>
             <p class="text-sm text-gray-500 mt-1">配置 PyPI、npm、Maven 等软件源</p>
@@ -47,9 +49,9 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </a>
 
-      <a href="/registry" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <a href={`${base}registry`} class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
         <div class="flex items-center gap-4">
-          <img src="/icons/whale.svg" alt="鲸鱼" class="w-10 h-10">
+          <img src={`${base}icons/whale.svg`} alt="鲸鱼" class="w-10 h-10">
           <div>
             <h2 class="text-lg font-semibold text-gray-800">容器镜像</h2>
             <p class="text-sm text-gray-500 mt-1">访问容器镜像仓库</p>
@@ -57,9 +59,9 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </a>
 
-      <a href="/packages" class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
+      <a href={`${base}packages`} class="block border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition bg-white">
         <div class="flex items-center gap-4">
-          <img src="/icons/folder.svg" alt="文件夹" class="w-10 h-10">
+          <img src={`${base}icons/folder.svg`} alt="文件夹" class="w-10 h-10">
           <div>
             <h2 class="text-lg font-semibold text-gray-800">软件包</h2>
             <p class="text-sm text-gray-500 mt-1">浏览和下载软件包</p>
